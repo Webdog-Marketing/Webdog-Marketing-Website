@@ -1,4 +1,4 @@
-import type { CaseStudy, Insight, Job, Testimonial } from './airtable';
+import type { CaseStudy, Insight, Job, TeamMember, Testimonial } from './airtable';
 
 // Mirrors the current live content. Used only when Airtable isn't connected.
 
@@ -136,4 +136,10 @@ export const fallbackInsights: Insight[] = [
     excerpt: 'Understanding the different stages that potential customers are at is essential when planning.',
     date: '2026-05-29',
   },
+];
+
+export const fallbackTeam: TeamMember[] = [
+  { id: 'fallback-matt', name: 'Matt Webb', role: 'Founder' },
+  { id: 'fallback-jatin', name: 'Jatin Kallamundkur', role: 'Paid Media Specialist' },
+  { id: 'fallback-quinn', name: 'Quinn Duong', role: 'Digital Marketing Executive' },
 ];

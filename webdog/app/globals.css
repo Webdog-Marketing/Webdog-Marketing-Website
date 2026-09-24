@@ -1054,11 +1054,13 @@ a {
   border-color: transparent;
 }
 .news__consent {
-  display: flex;
-  gap: 10px;
-  align-items: center;
   margin-top: 12px;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
+  color: rgb(243 247 239 / 0.7);
+}
+.news__consent a {
+  color: inherit;
+  text-underline-offset: 3px;
 }
 .news__consent input {
   accent-color: var(--fluro);
@@ -1832,4 +1834,157 @@ a {
 .prose--wide > p,
 .prose--wide > ul {
   max-width: 68ch;
+}
+
+/* ---------- Google rating badge ---------- */
+.gbadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--white);
+  border-radius: 999px;
+  padding: 10px 18px 10px 14px;
+  text-decoration: none;
+  font-size: 0.9375rem;
+  box-shadow: 0 3px 0 rgb(14 53 38 / 0.1);
+}
+.gbadge strong {
+  font: 700 1.125rem var(--font-display);
+}
+.gbadge span:last-child {
+  color: var(--ink-soft);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.stars {
+  display: inline-flex;
+  gap: 1px;
+}
+.stars svg {
+  fill: #d5ddd8;
+}
+.stars svg.on {
+  fill: #f4b400;
+}
+.quote__google {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* ---------- About: founder + team ---------- */
+.founder {
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(32px, 6vw, 80px);
+  align-items: center;
+}
+.founder__photo {
+  position: relative;
+}
+.founder__photo img,
+.founder__placeholder {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: 36px 36px 36px 8px;
+}
+.founder__placeholder {
+  background: var(--green-900) url('/brand/icon-green-tile.svg') center / 30% no-repeat;
+}
+.founder__photo::after {
+  /* fluro offset block behind the photo */
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 24px -20px -20px 24px;
+  background: var(--fluro);
+  border-radius: 36px 36px 36px 8px;
+}
+.founder__kicker {
+  font-weight: 600;
+  color: var(--green-500);
+  margin-bottom: 10px;
+}
+.founder__text {
+  display: grid;
+  gap: 1em;
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 58ch;
+}
+.founder__text .h2 {
+  color: var(--ink);
+  margin-bottom: 0.2em;
+}
+.founder__lede {
+  font: 600 1.375rem/1.4 var(--font-display);
+  color: var(--ink);
+}
+@media (max-width: 860px) {
+  .founder {
+    grid-template-columns: 1fr;
+  }
+  .founder__photo {
+    max-width: 420px;
+    margin-right: 20px;
+  }
+}
+
+.team-section {
+  background: var(--mint);
+}
+.team {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+}
+.member {
+  background: var(--white);
+  border-radius: 28px 28px 28px 8px;
+  padding: 16px 16px 24px;
+}
+.member__photo {
+  aspect-ratio: 1;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--green-900);
+  display: grid;
+  place-items: center;
+  margin-bottom: 18px;
+}
+.member__photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.member__photo .avatar--initials {
+  box-shadow: none;
+  background: var(--fluro);
+  color: var(--green-900);
+  font-size: 2rem;
+}
+.member__name {
+  font: 700 1.3125rem/1.2 var(--font-display);
+  padding: 0 8px;
+}
+.member__role {
+  color: var(--green-500);
+  font-weight: 600;
+  padding: 2px 8px 0;
+}
+.member__bio {
+  color: var(--ink-soft);
+  font-size: 0.975rem;
+  padding: 10px 8px 0;
+}
+.member__link {
+  display: inline-block;
+  margin: 12px 8px 0;
 }

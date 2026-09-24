@@ -1,4 +1,4 @@
-import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTestimonials } from './fallback';
+import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTeam, fallbackTestimonials } from './fallback';
 
 /*
  * Airtable is the CMS for anything Matt needs to change without a redeploy:
@@ -34,6 +34,8 @@ export type Testimonial = {
   role: string;
   company: string;
   headshot?: string; // stable /media/... URL, never a raw Airtable URL
+  source?: string; // 'Google' shows the Google review badge
+  rating?: number; // 1–5 stars, shown for Google reviews
 };
 
 export type CaseStudy = {
@@ -95,6 +97,8 @@ type TestimonialFields = {
   Role?: string;
   Company?: string;
   Headshot?: Attachment[];
+  Source?: string;
+  Rating?: number;
 };
 
 export async function getTestimonials(): Promise<Testimonial[]> {
@@ -109,6 +113,8 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       role: f.Role ?? '',
       company: f.Company ?? '',
       headshot: mediaUrl('Testimonials', id, 'Headshot', f.Headshot),
+      source: f.Source,
+      rating: f.Rating,
     }));
   } catch (err) {
     console.error(err);
@@ -192,6 +198,29 @@ export async function getInsights(): Promise<Insight[]> {
 
 export async function getInsight(slug: string) {
   return (await getInsights()).find((i) => i.slug === slug);
+}
+
+export type TeamMember = { id: string; name: string; role: string; bio?: string; linkedin?: string; headshot?: string };
+
+type TeamFields = { Name?: string; Role?: string; Bio?: string; LinkedIn?: string; Headshot?: Attachment[] };
+
+export async function getTeam(): Promise<TeamMember[]> {
+  if (!airtableConfigured) return fallbackTeam;
+  try {
+    const rows = await listRecords<TeamFields>('Team', published);
+    return rows.map(({ id, fields: f }) => ({
+      id,
+      name: f.Name ?? '',
+      role: f.Role ?? '',
+      bio: f.Bio,
+      linkedin: f.LinkedIn,
+      headshot: mediaUrl('Team', id, 'Headshot', f.Headshot),
+    }));
+  } catch (err) {
+    // Team table not created yet → show the built-in list.
+    console.error(err);
+    return fallbackTeam;
+  }
 }
 
 export type Job = { id: string; title: string; summary: string; requirements: string[] };

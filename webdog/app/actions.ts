@@ -31,7 +31,6 @@ export async function subscribe(_: FormState, data: FormData): Promise<FormState
   if (data.get('company_fax')) return { status: 'ok' };
   const email = String(data.get('email') ?? '').trim();
   if (!emailOk(email)) return { status: 'error', message: 'Enter a valid email address.' };
-  if (!data.get('consent')) return { status: 'error', message: 'Tick the box to confirm you want the newsletter.' };
   try {
     await createLead({ Type: 'Newsletter', Email: email, Source: 'Website' });
     return { status: 'ok', message: 'You’re subscribed.' };
@@ -48,11 +47,13 @@ export async function sendContact(_: FormState, data: FormData): Promise<FormSta
   const email = String(data.get('email') ?? '').trim();
   const phone = String(data.get('phone') ?? '').trim();
   const message = String(data.get('message') ?? '').trim();
+  const topic = String(data.get('topic') ?? 'general');
+  const type = topic === 'strategy' ? 'Strategy call' : topic === 'pricing' ? 'Pricing enquiry' : 'Contact';
   if (!first || !last || !emailOk(email)) {
     return { status: 'error', message: 'Add your first name, last name and a valid email address.' };
   }
   try {
-    await createLead({ Type: 'Contact', Name: `${first} ${last}`, Email: email, Phone: phone, Notes: message, Source: 'Website' });
+    await createLead({ Type: type, Name: `${first} ${last}`, Email: email, Phone: phone, Notes: message, Source: 'Website' });
     return { status: 'ok', message: 'Thanks. We’ll get back to you within one working day.' };
   } catch (e) {
     console.error(e);

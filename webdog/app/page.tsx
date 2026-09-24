@@ -2,7 +2,7 @@ import Link from 'next/link';
 import HeroMedia from '@/components/HeroMedia';
 import Flag from '@/components/Flag';
 import CaseStudyCard from '@/components/CaseStudyCard';
-import Testimonials from '@/components/Testimonials';
+import Testimonials, { GoogleG, Stars } from '@/components/Testimonials';
 import AuditForm from '@/components/AuditForm';
 import { getCaseStudies, getTestimonials, REVALIDATE_SECONDS } from '@/lib/airtable';
 import { site } from '@/lib/site';
@@ -54,9 +54,9 @@ export default async function Home() {
           <div className="grow__panel">
             <p>Webdog is the trusted companion of scale-ups the world over.</p>
             <div className="grow__actions">
-              <a href={site.bookingUrl} target="_blank" rel="noopener" className="btn btn--ink btn--lg">
+              <Link href={site.strategyCallHref} className="btn btn--ink btn--lg">
                 Book a strategy call
-              </a>
+              </Link>
               <Link href="#how-we-work" className="link">
                 or see how we work
               </Link>
@@ -138,9 +138,9 @@ export default async function Home() {
                   We build the strategy, localise the messaging, and run the execution. Growth doesn’t stop at your
                   home market.
                 </p>
-                <a href={site.bookingUrl} target="_blank" rel="noopener" className="link">
+                <Link href={site.strategyCallHref} className="link">
                   Book a demo
-                </a>
+                </Link>
               </div>
               <div className="service__art" aria-hidden="true">
                 <ul className="markets">
@@ -222,9 +222,19 @@ export default async function Home() {
       {testimonials.length > 0 && (
         <section className="section clients">
           <div className="wrap">
-            <div className="section__head">
-              <h2 className="h2">Our clients</h2>
-              <p>Why companies love Webdog</p>
+            <div className="section__head section__head--split">
+              <div>
+                <h2 className="h2">Our clients</h2>
+                <p>Why companies love Webdog</p>
+              </div>
+              <a href={site.googleReviews.url} className="gbadge" target="_blank" rel="noopener">
+                <GoogleG />
+                <strong>{site.googleReviews.rating}</strong>
+                <Stars n={Number(site.googleReviews.rating)} />
+                <span>
+                  {site.googleReviews.count} Google review{site.googleReviews.count === 1 ? '' : 's'}
+                </span>
+              </a>
             </div>
           </div>
           <div className="wrap wrap--bleed">
@@ -249,7 +259,7 @@ export default async function Home() {
             <p className="audit__alt">
               Rather talk it through? Open office hours run every Thursday, 1–5pm, in person at Generator Hub on
               Exeter Quayside or online.{' '}
-              <a href={site.bookingUrl} target="_blank" rel="noopener">
+              <a href={site.officeHoursUrl} target="_blank" rel="noopener">
                 Book a free hour
               </a>
             </p>

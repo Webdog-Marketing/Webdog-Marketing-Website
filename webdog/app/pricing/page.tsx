@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { site } from '@/lib/site';
 
 export const metadata: Metadata = {
   title: 'Pricing',
@@ -77,9 +76,12 @@ export default function PricingPage() {
                     <li key={f}>{f}</li>
                   ))}
                 </ul>
-                <a href={site.bookingUrl} target="_blank" rel="noopener" className={`btn ${p.featured ? 'btn--fluro' : 'btn--ink'} plan__cta`}>
+                <Link
+                  href={`/about?topic=pricing&plan=${encodeURIComponent(p.name)}#contact`}
+                  className={`btn ${p.featured ? 'btn--fluro' : 'btn--ink'} plan__cta`}
+                >
                   Talk to us about {p.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

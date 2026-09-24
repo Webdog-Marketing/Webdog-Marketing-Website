@@ -27,9 +27,9 @@ export default function NewsletterForm() {
         <input id="news-email" name="email" type="email" autoComplete="email" placeholder="Your email" required />
         <Submit />
       </div>
-      <label className="news__consent">
-        <input type="checkbox" name="consent" required /> Yes, subscribe me to your newsletter.
-      </label>
+      <p className="news__consent">
+        By subscribing you agree to receive our newsletter. Unsubscribe at any time. <a href="/privacy">Privacy policy</a>
+      </p>
       <input className="hp" name="company_fax" tabIndex={-1} autoComplete="off" aria-hidden="true" />
       {state.status === 'error' && <p className="form__error" role="alert">{state.message}</p>}
     </form>

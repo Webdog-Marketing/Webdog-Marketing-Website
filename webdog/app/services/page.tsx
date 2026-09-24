@@ -90,7 +90,7 @@ export default function ServicesPage() {
             <Link href="/#audit" className="btn btn--fluro btn--lg">
               Get your free funnel audit
             </Link>
-            <a href={site.bookingUrl} target="_blank" rel="noopener" className="link">
+            <a href={site.officeHoursUrl} target="_blank" rel="noopener" className="link">
               or book a free hour
             </a>
           </div>

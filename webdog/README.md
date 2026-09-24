@@ -21,6 +21,8 @@ Without Airtable env vars the site still runs, using the current live copy in `l
 | Pricing plans | `plans` list at the top of `app/pricing/page.tsx` |
 | Blog posts | Airtable → **Insights** |
 | Privacy policy | `app/privacy/page.tsx` |
+| Matt's photo on About | Put the file in `public/about/`, then set `aboutPhoto` in `lib/site.ts` |
+| Team members | Airtable → **Team** |
 | Brand colours, fonts | Top of `app/globals.css` |
 | Nav, email, socials, legal line | `lib/site.ts` |
 | Logo | `components/Logo.tsx` (placeholder — swap for the real file in `/public/brand/`) |
@@ -43,8 +45,12 @@ Create one base with three tables. Field names must match exactly.
 | Role | Single line text | e.g. Head of Marketing |
 | Company | Single line text | |
 | Headshot | Attachment | Square crop, 400px+. Leave empty to show initials |
+| Source | Single select: `Client`, `Google` | `Google` shows the Google logo and stars instead of the quote mark |
+| Rating | Number (or Rating field) | Stars for Google reviews, 1–5 |
 | Order | Number | Lower shows first |
 | Published | Checkbox | Only ticked rows appear |
+
+Google reviews: copy each review's text into Quote, the reviewer's name into Name, set Source = Google and Rating = 5. Role and Company can stay empty. The "5.0 · 5 Google reviews" badge on the homepage is set in `lib/site.ts` → `googleReviews`; update the count by hand as reviews come in.
 
 **Case Studies**
 
@@ -70,6 +76,18 @@ Create one base with three tables. Field names must match exactly.
 | Date | Date | Publish date |
 | Cover | Attachment | 16:10 image. Empty shows the Webdog icon on green |
 | Body | Long text, **rich text on** | The article |
+| Published | Checkbox | |
+
+**Team** (About page)
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| Name | Single line text | Primary field |
+| Role | Single line text | |
+| Headshot | Attachment | Square, 600px+. Empty shows initials |
+| Bio | Long text | Optional, one or two sentences |
+| LinkedIn | URL | Optional |
+| Order | Number | |
 | Published | Checkbox | |
 
 **Jobs**
