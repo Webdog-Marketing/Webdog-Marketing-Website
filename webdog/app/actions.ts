@@ -40,3 +40,50 @@ export async function subscribe(_: FormState, data: FormData): Promise<FormState
     return { status: 'error', message: 'That didn’t go through. Try again in a minute.' };
   }
 }
+
+export async function sendContact(_: FormState, data: FormData): Promise<FormState> {
+  if (data.get('company_fax')) return { status: 'ok' };
+  const first = String(data.get('first') ?? '').trim();
+  const last = String(data.get('last') ?? '').trim();
+  const email = String(data.get('email') ?? '').trim();
+  const phone = String(data.get('phone') ?? '').trim();
+  const message = String(data.get('message') ?? '').trim();
+  if (!first || !last || !emailOk(email)) {
+    return { status: 'error', message: 'Add your first name, last name and a valid email address.' };
+  }
+  try {
+    await createLead({ Type: 'Contact', Name: `${first} ${last}`, Email: email, Phone: phone, Notes: message, Source: 'Website' });
+    return { status: 'ok', message: 'Thanks. We’ll get back to you within one working day.' };
+  } catch (e) {
+    console.error(e);
+    return { status: 'error', message: 'That didn’t send. Email hello@webdog.marketing instead.' };
+  }
+}
+
+export async function applyForJob(_: FormState, data: FormData): Promise<FormState> {
+  if (data.get('company_fax')) return { status: 'ok' };
+  const first = String(data.get('first') ?? '').trim();
+  const last = String(data.get('last') ?? '').trim();
+  const email = String(data.get('email') ?? '').trim();
+  const phone = String(data.get('phone') ?? '').trim();
+  const position = String(data.get('position') ?? '').trim();
+  const start = String(data.get('start') ?? '').trim();
+  const cv = String(data.get('cv') ?? '').trim();
+  if (!first || !last || !emailOk(email) || !start) {
+    return { status: 'error', message: 'Add your name, a valid email and your available start date.' };
+  }
+  try {
+    await createLead({
+      Type: 'Job application',
+      Name: `${first} ${last}`,
+      Email: email,
+      Phone: phone,
+      Notes: [`Position: ${position || 'Not specified'}`, `Available from: ${start}`, `CV: ${cv || 'Not provided'}`].join('\n'),
+      Source: 'Website',
+    });
+    return { status: 'ok', message: 'Application received. We’ll be in touch if it’s a match.' };
+  } catch (e) {
+    console.error(e);
+    return { status: 'error', message: 'That didn’t send. Email your CV to hello@webdog.marketing instead.' };
+  }
+}

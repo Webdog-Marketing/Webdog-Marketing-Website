@@ -46,6 +46,7 @@ export default function Footer() {
             © Webdog Marketing {new Date().getFullYear()}. {site.legal}
           </p>
           <p className="footer__social">
+            <Link href="/privacy">Privacy</Link>
             <CookieSettingsLink />
             <a href={site.social.instagram}>Instagram</a>
             <a href={site.social.linkedin}>LinkedIn</a>

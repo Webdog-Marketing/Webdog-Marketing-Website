@@ -16,6 +16,7 @@ const nextConfig = {
         permanent: true,
       },
       { source: '/news', destination: '/insights', permanent: true },
+      { source: '/privacy-policy', destination: '/privacy', permanent: true },
       { source: '/pricing-plans/:path*', destination: '/pricing', permanent: true },
     ];
   },

@@ -6,6 +6,7 @@ import { getAttachment } from '@/lib/airtable';
 const ALLOWED: Record<string, { fields: string[]; size: 'large' | 'full' }> = {
   Testimonials: { fields: ['Headshot'], size: 'large' },
   'Case Studies': { fields: ['Cover'], size: 'full' },
+  Insights: { fields: ['Cover'], size: 'full' },
 };
 
 export async function GET(req: NextRequest, { params }: { params: { table: string; recordId: string } }) {

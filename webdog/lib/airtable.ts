@@ -1,4 +1,4 @@
-import { fallbackCaseStudies, fallbackTestimonials } from './fallback';
+import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTestimonials } from './fallback';
 
 /*
  * Airtable is the CMS for anything Matt needs to change without a redeploy:
@@ -152,6 +152,71 @@ export async function getCaseStudies(): Promise<CaseStudy[]> {
 export async function getCaseStudy(slug: string) {
   const all = await getCaseStudies();
   return all.find((c) => c.slug === slug);
+}
+
+export type Insight = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string;
+  date?: string; // ISO yyyy-mm-dd
+  cover?: string;
+  body?: string; // markdown (Airtable rich text)
+};
+
+type InsightFields = { Title?: string; Slug?: string; Excerpt?: string; Date?: string; Cover?: Attachment[]; Body?: string };
+
+/** Blog posts, newest first. */
+export async function getInsights(): Promise<Insight[]> {
+  if (!airtableConfigured) return fallbackInsights;
+  try {
+    const rows = await listRecords<InsightFields>('Insights', {
+      filterByFormula: '{Published}',
+      'sort[0][field]': 'Date',
+      'sort[0][direction]': 'desc',
+    });
+    return rows.map(({ id, fields: f }) => ({
+      id,
+      slug: f.Slug ?? id,
+      title: f.Title ?? '',
+      excerpt: f.Excerpt ?? '',
+      date: f.Date,
+      cover: mediaUrl('Insights', id, 'Cover', f.Cover),
+      body: f.Body,
+    }));
+  } catch (err) {
+    console.error(err);
+    return fallbackInsights;
+  }
+}
+
+export async function getInsight(slug: string) {
+  return (await getInsights()).find((i) => i.slug === slug);
+}
+
+export type Job = { id: string; title: string; summary: string; requirements: string[] };
+
+type JobFields = { Title?: string; Summary?: string; Requirements?: string };
+
+/** Open roles. Untick Published in Airtable to hide a role; no rows = "no open roles" message. */
+export async function getJobs(): Promise<Job[]> {
+  if (!airtableConfigured) return fallbackJobs;
+  try {
+    const rows = await listRecords<JobFields>('Jobs', published);
+    return rows.map(({ id, fields: f }) => ({
+      id,
+      title: f.Title ?? '',
+      summary: f.Summary ?? '',
+      requirements: (f.Requirements ?? '')
+        .split('\n')
+        .map((r) => r.replace(/^[-•*]\s*/, '').trim())
+        .filter(Boolean),
+    }));
+  } catch (err) {
+    // Jobs table not created yet → show the built-in roles rather than an empty page.
+    console.error(err);
+    return fallbackJobs;
+  }
 }
 
 /** Used by the media route to get a fresh (unexpired) attachment URL. */

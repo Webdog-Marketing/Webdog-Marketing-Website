@@ -1,5 +1,6 @@
 import Link from 'next/link';
-import FunnelArt from '@/components/FunnelArt';
+import HeroMedia from '@/components/HeroMedia';
+import Flag from '@/components/Flag';
 import CaseStudyCard from '@/components/CaseStudyCard';
 import Testimonials from '@/components/Testimonials';
 import AuditForm from '@/components/AuditForm';
@@ -38,7 +39,7 @@ export default async function Home() {
             </div>
           </div>
           <div className="hero__art">
-            <FunnelArt />
+            <HeroMedia />
           </div>
         </div>
       </section>
@@ -115,7 +116,7 @@ export default async function Home() {
                   We redesign and optimise your pre-registration experience so the right people sign up, and fewer
                   of the wrong ones do.
                 </p>
-                <Link href="/services#convert" className="link">
+                <Link href="/services#ux-ui-design" className="link">
                   Learn more about conversion
                 </Link>
               </div>
@@ -143,12 +144,24 @@ export default async function Home() {
               </div>
               <div className="service__art" aria-hidden="true">
                 <ul className="markets">
-                  <li>🇬🇧 UK</li>
-                  <li>🇺🇸 US</li>
-                  <li>🇩🇪 DE</li>
-                  <li>🇫🇷 FR</li>
-                  <li>🇪🇸 ES</li>
-                  <li>🇳🇱 NL</li>
+                  <li>
+                    <Flag code="GB" /> UK
+                  </li>
+                  <li>
+                    <Flag code="US" /> US
+                  </li>
+                  <li>
+                    <Flag code="DE" /> DE
+                  </li>
+                  <li>
+                    <Flag code="FR" /> FR
+                  </li>
+                  <li>
+                    <Flag code="ES" /> ES
+                  </li>
+                  <li>
+                    <Flag code="NL" /> NL
+                  </li>
                 </ul>
               </div>
             </article>
@@ -161,7 +174,7 @@ export default async function Home() {
                   We map and improve your post-registration journey so new users reach their “aha moment” faster,
                   and stick around.
                 </p>
-                <Link href="/services#activation" className="link">
+                <Link href="/services#communications" className="link">
                   Learn more about activation
                 </Link>
               </div>

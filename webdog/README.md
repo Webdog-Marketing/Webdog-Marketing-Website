@@ -18,6 +18,9 @@ Without Airtable env vars the site still runs, using the current live copy in `l
 | Case studies (cards + full write-ups) | Airtable → **Case Studies** |
 | Audit requests, newsletter sign-ups | Arrive in Airtable → **Leads** |
 | Homepage copy, services, How we work | `app/page.tsx` |
+| Pricing plans | `plans` list at the top of `app/pricing/page.tsx` |
+| Blog posts | Airtable → **Insights** |
+| Privacy policy | `app/privacy/page.tsx` |
 | Brand colours, fonts | Top of `app/globals.css` |
 | Nav, email, socials, legal line | `lib/site.ts` |
 | Logo | `components/Logo.tsx` (placeholder — swap for the real file in `/public/brand/`) |
@@ -57,12 +60,35 @@ Create one base with three tables. Field names must match exactly.
 | Order | Number | |
 | Published | Checkbox | |
 
-**Leads**
+**Insights** (blog posts; newest first by Date)
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| Title | Single line text | Primary field |
+| Slug | Single line text | URL: `/insights/<slug>`. Keep the old Wix slugs so existing links still work |
+| Excerpt | Long text | Card summary and meta description |
+| Date | Date | Publish date |
+| Cover | Attachment | 16:10 image. Empty shows the Webdog icon on green |
+| Body | Long text, **rich text on** | The article |
+| Published | Checkbox | |
+
+**Jobs**
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| Title | Single line text | Primary field |
+| Summary | Long text | The role description |
+| Requirements | Long text | One requirement per line |
+| Order | Number | |
+| Published | Checkbox | Untick to hide a filled role |
+
+**Leads** (audit requests, newsletter, contact form, job applications)
 
 | Field | Type |
 | --- | --- |
 | Name | Single line text (primary) |
 | Email | Email |
+| Phone | Phone number |
 | Website | URL |
 | Notes | Long text |
 | Type | Single select: `Funnel audit`, `Newsletter` |
@@ -94,17 +120,47 @@ so the new image shows as soon as the page refreshes and Vercel can cache each i
 `next.config.mjs` 301-redirects the old Wix URLs (`/resources`, `/news`, `/post/...`, `/pricing-plans/...`)
 to the new routes so existing links and rankings carry over.
 
+## Hero animation
+
+The homepage hero shows a built-in funnel illustration until you add your own animation.
+
+**Export spec**
+- Format: MP4 (H.264) required, plus WebM (VP9) optional for smaller files in Chrome/Firefox
+- Size: 1080 × 1080 px (square; shown at up to ~540px, exported at 2× for sharp screens)
+- Length: 6–12 seconds, looping seamlessly (last frame flows into the first)
+- Frame rate: 30fps. No audio track
+- File size: under 2 MB each, ideally around 1 MB
+- Background: solid #0E3526 baked in (video can't be transparent in every browser, so it must match the hero colour)
+- Keep the important content inside the central ~80%, as the frame has rounded corners
+- Poster: a still of the first frame as JPG or WebP, under 150 KB. Shown while loading and to visitors with "reduce motion" switched on
+
+**To install:** put the files in `public/hero/` (e.g. `hero.mp4`, `hero.webm`, `hero-poster.jpg`), then in `lib/site.ts` set:
+
+```ts
+heroVideo: { mp4: '/hero/hero.mp4', webm: '/hero/hero.webm', poster: '/hero/hero-poster.jpg', alt: 'Short description of the animation' },
+```
+
+Set it back to `null` to return to the funnel illustration.
+
 ## Tracking: GTM, GA4, Search Console
 
 **Google Tag Manager** loads on every page from `NEXT_PUBLIC_GTM_ID` (Vercel → Settings → Environment Variables, Production only so previews don't pollute data).
 
-**Consent:** Consent Mode v2 is built in. Analytics and ads storage default to *denied* until the visitor clicks "Accept cookies" in the banner. "Cookie settings" in the footer reopens it. GA4 still receives cookieless pings before consent, so modelled data fills the gap.
+**Consent:** the cookie banner offers Accept all, Reject all and Manage preferences (Analytics and Marketing switches).
+- **Strict mode (default):** GTM isn't loaded at all until the visitor allows analytics or marketing, so nothing reaches Google beforehand. Change `CONSENT_STRICT` in `lib/analytics.ts` to `false` for Google's "advanced" mode (GTM loads straight away and sends cookieless pings for modelled data).
+- Choices map to Consent Mode v2: Analytics → `analytics_storage`; Marketing → `ad_storage`, `ad_user_data`, `ad_personalization`.
+- Choices are remembered for 12 months, then the banner asks again. Bump `CONSENT_VERSION` to re-ask everyone (e.g. when you add a new tracking tool).
+- Turning a category off deletes the Google cookies it set (`_ga`, `_ga_*`, `_gcl_*` etc.).
+- "Cookie settings" in the footer and on /privacy reopens the preferences.
+- **In GTM:** Google tags (GA4, Google Ads) respect consent automatically. For any non-Google tag (LinkedIn Insight, Meta Pixel, Hotjar), open the tag → Advanced settings → Consent settings → *Require additional consent* → `ad_storage` (marketing tools) or `analytics_storage` (analytics tools). Admin → Container settings → tick *Enable consent overview* to check every tag at a glance.
 
 **GA4 (set up inside GTM, not in code):**
 1. Tags → New → *Google Tag* → your GA4 Measurement ID (`G-...`) → trigger *Initialization – All Pages*.
 2. Built-in consent checks handle the rest; no extra consent tags needed.
 3. Conversions the site already pushes to the dataLayer:
    - `generate_lead` (with `form_name: funnel_audit`) when an audit request succeeds
+   - `generate_lead` (with `form_name: contact`) when the About page contact form is sent
+   - `job_application` when someone applies for a role
    - `sign_up` (with `method: newsletter`) when someone subscribes
    - `consent_update` when a visitor makes a cookie choice
    For each: Triggers → New → *Custom Event* with that event name, then a *GA4 Event* tag with the same name. Mark `generate_lead` as a key event in GA4.
@@ -116,4 +172,4 @@ to the new routes so existing links and rankings carry over.
 
 ## Still to build
 
-`/about`, `/services`, `/insights`, `/jobs`, `/pricing` — linked from the nav/footer but not yet created.
+Nothing structural. Before launch: fill in `REGISTERED_OFFICE` and `ICO_NUMBER` at the top of `app/privacy/page.tsx`, and move the three Insights articles and case study write-ups into Airtable.

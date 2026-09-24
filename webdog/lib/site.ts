@@ -10,12 +10,19 @@ export const site = {
     instagram: 'https://www.instagram.com/webdog_marketing/',
     linkedin: 'https://www.linkedin.com/company/webdog-marketing/',
   },
+  /*
+   * Hero animation. Leave as null to show the built-in funnel illustration.
+   * To use your own: put the files in /public/hero/ and fill this in, e.g.
+   * heroVideo: { mp4: '/hero/hero.mp4', webm: '/hero/hero.webm', poster: '/hero/hero-poster.jpg', alt: 'Short description' },
+   */
+  heroVideo: null as null | { mp4: string; webm?: string; poster: string; alt: string },
   nav: [
     { label: 'Services', href: '/#services' },
     { label: 'Case studies', href: '/case-studies' },
+    { label: 'Pricing', href: '/pricing' },
     { label: 'Insights', href: '/insights' },
     { label: 'About', href: '/about' },
     { label: 'Jobs', href: '/jobs' },
-    { label: 'Contact', href: '/#audit' },
+    { label: 'Contact', href: '/about#contact' },
   ],
 };
