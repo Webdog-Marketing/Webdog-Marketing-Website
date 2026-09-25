@@ -41,6 +41,10 @@ export default function Footer() {
           </div>
         </div>
 
+        <p className="footer__sister">
+          Working in sport? Visit our sister agency, <a href={site.sportsSite}>Webdog Sports Marketing</a>
+        </p>
+
         <div className="footer__legal">
           <p>
             © Webdog Marketing {new Date().getFullYear()}. {site.legal}

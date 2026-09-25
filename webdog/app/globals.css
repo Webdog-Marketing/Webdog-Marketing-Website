@@ -2010,3 +2010,13 @@ a {
 .roles-section + .audit {
   --behind: var(--white);
 }
+
+.footer__sister {
+  padding: 20px 0 24px;
+  font-size: 0.9375rem;
+}
+.footer__sister a {
+  color: var(--fluro);
+  font-weight: 600;
+  text-underline-offset: 4px;
+}

@@ -6,6 +6,7 @@ export const site = {
   officeHoursUrl: process.env.NEXT_PUBLIC_BOOKING_URL || 'https://calendar.app.google/LmR1G38ijZCFZFLa9',
   legal:
     'Webdog Marketing is the trading name of OneTerra Consulting. Registered in England and Wales 15020732.',
+  sportsSite: 'https://www.webdogsports.marketing',
   social: {
     instagram: 'https://www.instagram.com/webdog_marketing/',
     linkedin: 'https://www.linkedin.com/company/webdog-marketing/',

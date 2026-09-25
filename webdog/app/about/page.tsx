@@ -49,8 +49,12 @@ export default async function AboutPage() {
               full-time with Webdog to fix exactly that.
             </p>
             <p>
-              I’m based in Devon and work from Generator Hub on Exeter Quayside. Away from client work I volunteer as
-              General Secretary of the Marshall Islands Soccer Federation, and I still play football most weekends.
+              I’m based in Devon and work from Generator Hub on Exeter Quayside. Sport is my other passion: I volunteer
+              as General Secretary of the Marshall Islands Soccer Federation, run our sister agency{' '}
+              <a href={site.sportsSite} className="link">
+                Webdog Sports Marketing
+              </a>{' '}
+              for sports organisations, and still play football most weekends.
             </p>
           </div>
         </div>
