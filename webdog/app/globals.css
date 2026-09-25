@@ -908,6 +908,7 @@ a {
 
 /* Audit CTA */
 .audit {
+  position: relative;
   background: var(--green-900);
   color: var(--paper);
   padding: var(--section) 0;
@@ -1889,6 +1890,7 @@ a {
   width: 100%;
   aspect-ratio: 4 / 5;
   object-fit: cover;
+  object-position: 50% 40%;
   border-radius: 36px 36px 36px 8px;
 }
 .founder__placeholder {
@@ -1987,4 +1989,24 @@ a {
 .member__link {
   display: inline-block;
   margin: 12px 8px 0;
+}
+
+/* Fill the space behind the audit/contact section's rounded top corners with the
+   colour of the section above, so no page background shows through. */
+.audit::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 48px;
+  background: var(--behind, transparent);
+}
+.clients + .audit,
+.team-section + .audit {
+  --behind: var(--mint);
+}
+.roles-section + .audit {
+  --behind: var(--white);
 }

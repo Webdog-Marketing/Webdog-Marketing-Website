@@ -27,7 +27,7 @@ export default async function AboutPage() {
           <div className="founder__photo">
             {site.aboutPhoto ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={site.aboutPhoto} alt="Matt Webb, founder of Webdog, working at his laptop" width={900} height={1100} />
+              <img src={site.aboutPhoto} alt="Matt Webb, founder of Webdog, working at his laptop" width={1000} height={1333} />
             ) : (
               <span className="founder__placeholder" aria-hidden="true" />
             )}
@@ -39,9 +39,9 @@ export default async function AboutPage() {
               I’ve spent over 15 years in marketing, in-house and agency-side, helping B2B businesses grow.
             </p>
             <p>
-              Along the way I’ve helped Stannp grow from £10m to £20m ARR, cut Applaud’s customer acquisition cost by
-              35% while doubling their MQLs and SQLs, and built Pass the Keys a direct booking engine that saved them
-              £500k in commission.
+              Along the way I’ve helped a MarTech SaaS business grow from £10m to £20m ARR, cut an HR SaaS company’s
+              customer acquisition cost by 35% while doubling their MQLs and SQLs, and built a PropTech business a
+              direct booking engine that saved them £500k in commission.
             </p>
             <p>
               Every one of those businesses had the same problem: a marketing team pulled in every direction, asked to
