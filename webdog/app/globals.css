@@ -49,7 +49,16 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 88px;
 }
+html {
+  background: var(--paper);
+}
+/* Footer always sits at the bottom of the window, even on short pages, so nothing
+   from a previous page can show below it after navigating. */
 body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   background: var(--paper);
   color: var(--ink);
@@ -2019,4 +2028,8 @@ a {
   color: var(--fluro);
   font-weight: 600;
   text-underline-offset: 4px;
+}
+
+main {
+  flex: 1 0 auto;
 }

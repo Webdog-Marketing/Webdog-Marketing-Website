@@ -25,7 +25,7 @@ export default function Footer() {
             <Link href="/#services">Services</Link>
             <Link href="/pricing">Pricing</Link>
             <Link href="/case-studies">Case studies</Link>
-            <Link href="/#audit">Contact</Link>
+            <Link href="/about#contact">Contact</Link>
           </nav>
           <div>
             <p className="footer__h">Contact</p>
