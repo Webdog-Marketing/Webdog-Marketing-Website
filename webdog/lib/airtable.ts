@@ -1,4 +1,4 @@
-import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTeam, fallbackTestimonials } from './fallback';
+import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTeam, fallbackTestimonials, localHeadshots } from './fallback';
 
 /*
  * Airtable is the CMS for anything Matt needs to change without a redeploy:
@@ -214,7 +214,8 @@ export async function getTeam(): Promise<TeamMember[]> {
       role: f.Role ?? '',
       bio: f.Bio,
       linkedin: f.LinkedIn,
-      headshot: mediaUrl('Team', id, 'Headshot', f.Headshot),
+      // Airtable photo first; otherwise the one stored in public/team/
+      headshot: mediaUrl('Team', id, 'Headshot', f.Headshot) ?? localHeadshots[(f.Name ?? '').trim()],
     }));
   } catch (err) {
     // Team table not created yet → show the built-in list.

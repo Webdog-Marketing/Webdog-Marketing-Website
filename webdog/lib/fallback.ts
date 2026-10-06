@@ -138,8 +138,18 @@ export const fallbackInsights: Insight[] = [
   },
 ];
 
+/*
+ * Headshots stored in the code (public/team/). Used whenever a person's Airtable
+ * row has no Headshot. To add one: save a square photo as public/team/<name>.jpg
+ * and add the person's name here.
+ */
+export const localHeadshots: Record<string, string> = {
+  'Matt Webb': '/team/matt-webb.jpg',
+  'Quinn Duong': '/team/quinn-duong.jpg',
+};
+
 export const fallbackTeam: TeamMember[] = [
-  { id: 'fallback-matt', name: 'Matt Webb', role: 'Founder' },
+  { id: 'fallback-matt', name: 'Matt Webb', role: 'Founder', headshot: localHeadshots['Matt Webb'] },
   { id: 'fallback-jatin', name: 'Jatin Kallamundkur', role: 'Paid Media Specialist' },
-  { id: 'fallback-quinn', name: 'Quinn Duong', role: 'Digital Marketing Executive' },
+  { id: 'fallback-quinn', name: 'Quinn Duong', role: 'Digital Marketing Executive', headshot: localHeadshots['Quinn Duong'] },
 ];
