@@ -5,6 +5,8 @@ import { site } from '@/lib/site';
 import { GtmHead, GtmNoScript } from '@/components/Analytics';
 import CookieBanner from '@/components/CookieBanner';
 import { GSC_VERIFICATION } from '@/lib/analytics';
+import FormaConnectorScript from "next/script";
+
 
 const ADOBE_KIT = process.env.NEXT_PUBLIC_ADOBE_FONTS_KIT; // e.g. abc1def
 import './globals.css';
@@ -39,7 +41,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main id="main">{children}</main>
         <Footer />
         <CookieBanner />
-      </body>
+      
+<FormaConnectorScript id="forma-connector" data-forma-connector="1" src="https://formacms.app/visual-cms.js" strategy="afterInteractive" data-editor="https://formacms.app" data-content="/forma/content.json" />
+</body>
     </html>
   );
 }

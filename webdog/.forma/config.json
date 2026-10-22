@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "repository": "Webdog-Marketing/Webdog-Marketing-Website",
+  "root": "webdog",
+  "framework": "Next.js · App Router",
+  "entry": "webdog/app/layout.tsx",
+  "publicDir": "webdog/public",
+  "siteUrl": "https://www.webdog.marketing/",
+  "editorOrigin": "https://formacms.app",
+  "contentPath": "webdog/public/forma/content.json"
+}
