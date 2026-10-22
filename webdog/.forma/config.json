@@ -7,5 +7,6 @@
   "publicDir": "webdog/public",
   "siteUrl": "https://www.webdog.marketing/",
   "editorOrigin": "https://formacms.app",
-  "contentPath": "webdog/public/forma/content.json"
+  "contentPath": "webdog/public/forma/content.json",
+  "liveSiteId": "ahnIJgCWSDNe2C7Sz_iBc6wAOr3IU-zs05DvSYBf_Ko"
 }
