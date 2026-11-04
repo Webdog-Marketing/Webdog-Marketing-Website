@@ -4,7 +4,9 @@ import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTeam, fall
  * Airtable is the CMS for anything Matt needs to change without a redeploy:
  * testimonials (incl. headshots) and case studies.
  *
- * Content is cached for 5 minutes (ISR). To see a change instantly, hit
+ * Content is cached for 24 hours to stay well inside Airtable's free-plan limit
+ * of 1,000 API calls a month (shared by every base in the workspace). To see a
+ * change straight away, hit
  * /api/revalidate?secret=YOUR_SECRET after editing in Airtable.
  *
  * If the env vars are missing (local dev before setup, preview builds),
@@ -15,7 +17,7 @@ const TOKEN = process.env.AIRTABLE_TOKEN;
 const BASE = process.env.AIRTABLE_BASE_ID;
 export const airtableConfigured = Boolean(TOKEN && BASE);
 
-export const REVALIDATE_SECONDS = 300;
+export const REVALIDATE_SECONDS = 86400; // 24 hours
 
 type Attachment = {
   id: string;
@@ -261,7 +263,9 @@ export async function getJobs(): Promise<Job[]> {
 export async function getAttachment(table: string, recordId: string, field: string, size: 'large' | 'full') {
   const res = await fetch(`https://api.airtable.com/v0/${BASE}/${encodeURIComponent(table)}/${recordId}`, {
     headers: { Authorization: `Bearer ${TOKEN}` },
-    next: { revalidate: 60 },
+    // Attachment links expire after ~2 hours, so this lookup is cached for 1 hour.
+    // It only runs when the CDN doesn't already have the image.
+    next: { revalidate: 3600 },
   });
   if (!res.ok) return undefined;
   const { fields } = (await res.json()) as { fields: Record<string, Attachment[] | undefined> };

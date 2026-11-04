@@ -27,7 +27,7 @@ Without Airtable env vars the site still runs, using the current live copy in `l
 | Nav, email, socials, legal line | `lib/site.ts` |
 | Logo | `components/Logo.tsx` (placeholder — swap for the real file in `/public/brand/`) |
 
-Airtable edits appear within 5 minutes. To publish instantly, visit
+Airtable edits appear within 24 hours. To publish instantly, visit
 `https://www.webdog.marketing/api/revalidate?secret=YOUR_REVALIDATE_SECRET`
 (or call that URL from an Airtable automation when a record changes).
 
