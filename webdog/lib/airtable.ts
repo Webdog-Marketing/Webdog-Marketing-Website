@@ -1,10 +1,13 @@
+import { unstable_cache } from 'next/cache';
 import { fallbackCaseStudies, fallbackInsights, fallbackJobs, fallbackTeam, fallbackTestimonials, localHeadshots } from './fallback';
 
 /*
  * Airtable is the CMS for anything Matt needs to change without a redeploy:
  * testimonials (incl. headshots) and case studies.
  *
- * Content is cached for 5 minutes (ISR). To see a change instantly, hit
+ * Content is cached for 24 hours to stay well inside Airtable's free-plan limit
+ * of 1,000 API calls a month (shared by every base in the workspace). To see a
+ * change straight away, hit
  * /api/revalidate?secret=YOUR_SECRET after editing in Airtable.
  *
  * If the env vars are missing (local dev before setup, preview builds),
@@ -15,7 +18,7 @@ const TOKEN = process.env.AIRTABLE_TOKEN;
 const BASE = process.env.AIRTABLE_BASE_ID;
 export const airtableConfigured = Boolean(TOKEN && BASE);
 
-export const REVALIDATE_SECONDS = 300;
+export const REVALIDATE_SECONDS = 86400; // 24 hours
 
 type Attachment = {
   id: string;
@@ -36,6 +39,8 @@ export type Testimonial = {
   headshot?: string; // stable /media/... URL, never a raw Airtable URL
   source?: string; // 'Google' shows the Google review badge
   rating?: number; // 1–5 stars, shown for Google reviews
+  review?: string; // full review text, shown collapsed under the pull quote
+  services?: string[]; // what we did for them, shown as tags
 };
 
 export type CaseStudy = {
@@ -99,9 +104,11 @@ type TestimonialFields = {
   Headshot?: Attachment[];
   Source?: string;
   Rating?: number;
+  Review?: string;
+  Services?: string[] | string; // multiple select (or comma-separated text)
 };
 
-export async function getTestimonials(): Promise<Testimonial[]> {
+async function loadTestimonials(): Promise<Testimonial[]> {
   if (!airtableConfigured) return fallbackTestimonials;
   try {
     const rows = await listRecords<TestimonialFields>('Testimonials', published);
@@ -115,6 +122,10 @@ export async function getTestimonials(): Promise<Testimonial[]> {
       headshot: mediaUrl('Testimonials', id, 'Headshot', f.Headshot),
       source: f.Source,
       rating: f.Rating,
+      review: f.Review?.trim() || undefined,
+      services: (Array.isArray(f.Services) ? f.Services : (f.Services ?? '').split(','))
+        .map((s) => s.trim())
+        .filter(Boolean),
     }));
   } catch (err) {
     console.error(err);
@@ -145,7 +156,7 @@ function toCaseStudy({ id, fields: f }: AirtableRecord<CaseStudyFields>): CaseSt
   };
 }
 
-export async function getCaseStudies(): Promise<CaseStudy[]> {
+async function loadCaseStudies(): Promise<CaseStudy[]> {
   if (!airtableConfigured) return fallbackCaseStudies;
   try {
     return (await listRecords<CaseStudyFields>('Case Studies', published)).map(toCaseStudy);
@@ -173,7 +184,7 @@ export type Insight = {
 type InsightFields = { Title?: string; Slug?: string; Excerpt?: string; Date?: string; Cover?: Attachment[]; Body?: string };
 
 /** Blog posts, newest first. */
-export async function getInsights(): Promise<Insight[]> {
+async function loadInsights(): Promise<Insight[]> {
   if (!airtableConfigured) return fallbackInsights;
   try {
     const rows = await listRecords<InsightFields>('Insights', {
@@ -204,7 +215,7 @@ export type TeamMember = { id: string; name: string; role: string; bio?: string;
 
 type TeamFields = { Name?: string; Role?: string; Bio?: string; LinkedIn?: string; Headshot?: Attachment[] };
 
-export async function getTeam(): Promise<TeamMember[]> {
+async function loadTeam(): Promise<TeamMember[]> {
   if (!airtableConfigured) return fallbackTeam;
   try {
     const rows = await listRecords<TeamFields>('Team', published);
@@ -229,7 +240,7 @@ export type Job = { id: string; title: string; summary: string; requirements: st
 type JobFields = { Title?: string; Summary?: string; Requirements?: string };
 
 /** Open roles. Untick Published in Airtable to hide a role; no rows = "no open roles" message. */
-export async function getJobs(): Promise<Job[]> {
+async function loadJobs(): Promise<Job[]> {
   if (!airtableConfigured) return fallbackJobs;
   try {
     const rows = await listRecords<JobFields>('Jobs', published);
@@ -250,10 +261,12 @@ export async function getJobs(): Promise<Job[]> {
 }
 
 /** Used by the media route to get a fresh (unexpired) attachment URL. */
-export async function getAttachment(table: string, recordId: string, field: string, size: 'large' | 'full') {
+async function loadAttachment(table: string, recordId: string, field: string, size: 'large' | 'full') {
   const res = await fetch(`https://api.airtable.com/v0/${BASE}/${encodeURIComponent(table)}/${recordId}`, {
     headers: { Authorization: `Bearer ${TOKEN}` },
-    next: { revalidate: 60 },
+    // Attachment links expire after ~2 hours, so this lookup is cached for 1 hour.
+    // It only runs when the CDN doesn't already have the image.
+    next: { revalidate: 3600 },
   });
   if (!res.ok) return undefined;
   const { fields } = (await res.json()) as { fields: Record<string, Attachment[] | undefined> };
@@ -261,6 +274,25 @@ export async function getAttachment(table: string, recordId: string, field: stri
   if (!att) return undefined;
   return att.thumbnails?.[size]?.url ?? att.url;
 }
+
+/*
+ * Every read goes through Next's shared data cache, keyed by function (and its
+ * arguments). The *result* is cached, including the built-in fallback when Airtable
+ * is unreachable or over its limit, so a failing Airtable can never cause a storm of
+ * repeat calls from bots, crawlers or missing pages. One call per table per day.
+ * /api/revalidate clears it all (tag "airtable").
+ */
+const daily = { revalidate: REVALIDATE_SECONDS, tags: ['airtable'] };
+export const getTestimonials = unstable_cache(loadTestimonials, ['airtable-testimonials'], daily);
+export const getCaseStudies = unstable_cache(loadCaseStudies, ['airtable-case-studies'], daily);
+export const getInsights = unstable_cache(loadInsights, ['airtable-insights'], daily);
+export const getTeam = unstable_cache(loadTeam, ['airtable-team'], daily);
+export const getJobs = unstable_cache(loadJobs, ['airtable-jobs'], daily);
+// Attachment links expire after ~2 hours, so these lookups are cached for 1 hour.
+export const getAttachment = unstable_cache(loadAttachment, ['airtable-attachment'], {
+  revalidate: 3600,
+  tags: ['airtable'],
+});
 
 /** Form submissions land in the Leads table. */
 export async function createLead(fields: Record<string, string>) {

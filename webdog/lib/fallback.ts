@@ -4,12 +4,88 @@ import type { CaseStudy, Insight, Job, TeamMember, Testimonial } from './airtabl
 
 export const fallbackTestimonials: Testimonial[] = [
   {
-    id: 'fallback-duncan',
-    quote: "Saved us 000's by building our direct booking website.",
-    context: "We helped a PropTech business reduce reliance on OTA's by building a user-friendly booking website.",
-    name: 'Duncan Rooney',
-    role: 'Head of Marketing',
-    company: 'Pass the Keys',
+    id: 'g-matt-h',
+    source: 'Google',
+    rating: 5,
+    name: 'Matt H.',
+    role: 'Director, Construction',
+    company: '',
+    services: ['SEO'],
+    quote: 'Best decision we’ve made for our business this year!',
+    review: `I can't recommend WebDog highly enough. From the very first meeting, Matt came in with a clear, well thought out digital marketing strategy and a proper presentation setting out exactly what he was going to do and why. Since then he's delivered on every target he set, and then some.
+
+What really sets him apart is how available he is. Nothing is ever too much trouble, whether it's a quick question or a proper deep dive into something on the site. We've built a genuinely strong working relationship over the past few months, and it shows in the results, our website optimisation has come on leaps and bounds.
+
+If you're after an SEO guru who actually does what he says he'll do, and keeps you in the loop the whole way through, Matt's your man. My website's been on steroids since we started working together.`,
+  },
+  {
+    id: 'g-jake-r',
+    source: 'Google',
+    rating: 5,
+    name: 'Jake R.',
+    role: 'Founder, Service Industry',
+    company: '',
+    services: ['Website Design', 'Graphic Design', 'SEO'],
+    quote: 'The website we’ve created is something I’m genuinely so proud of.',
+    review: `I’ve been working with Webdog over the last few months, and it’s been brilliant having someone with real knowledge and experience to help shape the direction of my business.
+
+Matt has been a huge help when it comes to digital strategy, marketing ideas and website creation, always offering honest advice and helping turn my ideas into something that actually works for the business.
+
+The website we’ve created is something I’m genuinely so proud of, and I know I wouldn’t have been able to bring it to life without Matt’s expertise, patience and guidance.
+
+If you’re looking for someone who understands both the creative and strategic side of building your business online, I couldn’t recommend Webdog enough.`,
+  },
+  {
+    id: 'g-becky-f',
+    source: 'Google',
+    rating: 5,
+    name: 'Becky F.',
+    role: 'Founder, Sports Club',
+    company: '',
+    services: ['Website Design'],
+    quote: 'What has really stood out is the support that goes far beyond simply building a website.',
+    review: `I honestly can’t recommend Webdog highly enough! From start to finish, the whole experience has been fantastic.
+
+The website design has been brilliant and exactly what we needed, but what has really stood out is the support that goes far beyond simply building a website. The digital advice, guidance and ideas have been incredibly helpful, and everything is always explained clearly without making things complicated.
+
+Nothing ever feels like too much trouble, and you genuinely feel like you’re working with someone who cares about your business and wants to help it succeed.
+
+Professional, knowledgeable, creative, approachable and, quite simply, generally fantastic.
+
+If you’re looking for someone to help with your website or give you trustworthy digital advice, I wouldn’t hesitate to recommend Webdog.`,
+  },
+  {
+    id: 'g-elliot-s',
+    source: 'Google',
+    rating: 5,
+    name: 'Elliot S.',
+    role: 'Founder, Charity',
+    company: '',
+    services: ['UX/UI Consultation'],
+    quote: 'His digital marketing knowledge is incredible.',
+    review: `I recently consulted Matt on a new website I was working on. He carried out a very thorough UX review, identifying numerous improvements I could make. His digital marketing knowledge is incredible, he gave me so many pointers on how to market my product as well as an added extra. I’m really happy with how the site turned out post-review and am already seeing the benefits of the digital marketing advice he shared with me. Can’t recommend him enough.`,
+  },
+  {
+    id: 'g-kara-s',
+    source: 'Google',
+    rating: 5,
+    name: 'Kara S.',
+    role: 'COO, Charity',
+    company: '',
+    services: ['Digital Consulting'],
+    quote: 'Hugely beneficial to our charity and had massive impact across our work.',
+    review: `Matt did a lot of work for our charity and provided us with excellent digital advice and support. This was hugely beneficial to our charity and had massive impact across our work.`,
+  },
+  {
+    id: 'g-oliver-f',
+    source: 'Google',
+    rating: 5,
+    name: 'Oliver F.',
+    role: 'Director, Construction',
+    company: '',
+    services: ['Website Design', 'SEO'],
+    quote: 'Top bloke. Would highly recommend.',
+    review: `Matt helped me out with my website for my grounds maintenance business. Went through everything step by step. Easy to talk to and will even come and meet you face to face if needed. Top bloke. Would highly recommend and will continue using matt for all digital marketing needs.`,
   },
 ];
 

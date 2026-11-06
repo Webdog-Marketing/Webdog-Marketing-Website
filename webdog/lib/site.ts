@@ -19,7 +19,7 @@ export const site = {
   // Contact form links. ?topic= preselects the enquiry type on the About page form.
   strategyCallHref: '/about?topic=strategy#contact',
   // Update rating/count by hand as reviews come in. Swap url for your full Google Maps link if you prefer.
-  googleReviews: { url: 'https://share.google/H9gvs56tbkIaKzxXh', rating: '5.0', count: 5 },
+  googleReviews: { url: 'https://share.google/H9gvs56tbkIaKzxXh', rating: '5.0', count: 6 },
   // About page photo of Matt. Put the file in /public/about/ and set the path, e.g. '/about/matt-working.jpg'
   aboutPhoto: '/about/matt-webb-webdog-marketing.jpg' as null | string,
   heroVideo: null as null | { mp4: string; webm?: string; poster: string; alt: string },

@@ -1,0 +1,88 @@
+/*
+ * Testimonial cards: pull quote + collapsible full review + service tags + arrows.
+ * Kept in its own file (rather than app/globals.css) so it never clashes with
+ * changes FormaCMS makes inside app/.
+ */
+.quotes-wrap .quotes {
+  grid-auto-columns: min(460px, 86vw);
+  align-items: start;
+  scroll-behavior: smooth;
+}
+.quotes-wrap .quote {
+  gap: 22px;
+}
+.quotes-wrap .quote__text {
+  font: 700 clamp(1.3125rem, 2vw, 1.625rem) / 1.2 var(--font-display);
+}
+
+/* ---------- Testimonial reviews ---------- */
+.review {
+  margin-top: 16px;
+}
+.review__text {
+  display: grid;
+  gap: 0.8em;
+  color: var(--ink-soft);
+  font-size: 0.975rem;
+  line-height: 1.6;
+}
+.review__text.is-clamped {
+  max-height: calc(0.975rem * 1.6 * 4);
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent);
+  mask-image: linear-gradient(to bottom, #000 55%, transparent);
+}
+.review__toggle {
+  margin-top: 10px;
+  background: none;
+  border: 0;
+  padding: 4px 0;
+  font: 600 0.9375rem var(--font-body);
+  color: var(--green-900);
+  text-decoration: underline;
+  text-decoration-color: var(--green-500);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.quote__tags {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.quote__tags li {
+  background: var(--mint);
+  color: var(--green-900);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+.quotes__nav {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+.quotes__btn {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 0;
+  background: var(--green-900);
+  color: var(--fluro);
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+.quotes__btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.quotes__btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}

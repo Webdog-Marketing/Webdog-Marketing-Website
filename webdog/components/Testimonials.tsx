@@ -1,5 +1,8 @@
 import type { Testimonial } from '@/lib/airtable';
 import Avatar from './Avatar';
+import ReviewText from './ReviewText';
+import QuoteScroller from './QuoteScroller';
+import './testimonials.css';
 
 export function Stars({ n }: { n: number }) {
   return (
@@ -24,37 +27,66 @@ export function GoogleG() {
   );
 }
 
-// Horizontal scroll-snap row: swipeable on mobile, no carousel JS needed.
+/*
+ * Each card shows a short pull quote (Quote) in large type, with the full review
+ * (Review) underneath, collapsed to a few lines. If only a long Quote is filled in,
+ * its first sentence becomes the pull quote and the rest is collapsed, so cards
+ * never balloon.
+ */
+function split(t: Testimonial) {
+  if (t.review) return { headline: t.quote, review: t.review };
+  if (t.quote.length <= 160) return { headline: t.quote, review: undefined };
+  const first = t.quote.split(/(?<=[.!?])\s+/)[0];
+  const headline = first.length <= 160 ? first : `${first.slice(0, 150).replace(/\s+\S*$/, '')}…`;
+  return { headline, review: t.quote };
+}
+
 export default function Testimonials({ items }: { items: Testimonial[] }) {
   return (
-    <div className={`quotes ${items.length === 1 ? 'quotes--single' : ''}`} tabIndex={0} aria-label="Client testimonials">
-      {items.map((t) => (
-        <figure key={t.id} className="quote">
-          {t.source === 'Google' ? (
-            <p className="quote__google">
-              <GoogleG />
-              <Stars n={t.rating ?? 5} />
-              <span className="sr-only">{t.rating ?? 5} out of 5 stars on Google</span>
-            </p>
-          ) : (
-            <svg className="quote__mark" viewBox="0 0 40 32" aria-hidden="true">
-              <path d="M0 32V19C0 8 6 1 17 0l2 5c-6 2-9 6-9 11h8v16zm22 0V19c0-11 6-18 17-19l1 5c-6 2-9 6-9 11h8v16z" />
-            </svg>
-          )}
-          <blockquote>
-            <p className="quote__text">{t.quote}</p>
-            {t.context && <p className="quote__context">{t.context}</p>}
-          </blockquote>
-          <figcaption>
-            <Avatar src={t.headshot} name={t.name} />
-            <span>
-              <strong>{t.name}</strong>
-              <br />
-              {[t.role, t.company].filter(Boolean).join(', ') || (t.source === 'Google' ? 'Google review' : '')}
-            </span>
-          </figcaption>
-        </figure>
-      ))}
-    </div>
+    <QuoteScroller count={items.length}>
+      {items.map((t) => {
+        const { headline, review } = split(t);
+        const by = [t.role, t.company].filter(Boolean).join(', ') || (t.source === 'Google' ? 'Google review' : '');
+        return (
+          <figure key={t.id} className="quote">
+            {t.source === 'Google' ? (
+              <p className="quote__google">
+                <GoogleG />
+                <Stars n={t.rating ?? 5} />
+                <span className="sr-only">{t.rating ?? 5} out of 5 stars on Google</span>
+              </p>
+            ) : (
+              <svg className="quote__mark" viewBox="0 0 40 32" aria-hidden="true">
+                <path d="M0 32V19C0 8 6 1 17 0l2 5c-6 2-9 6-9 11h8v16zm22 0V19c0-11 6-18 17-19l1 5c-6 2-9 6-9 11h8v16z" />
+              </svg>
+            )}
+            <blockquote>
+              <p className="quote__text">{headline}</p>
+              {t.context && !review && <p className="quote__context">{t.context}</p>}
+              {review && <ReviewText text={review} />}
+            </blockquote>
+            <figcaption>
+              <Avatar src={t.headshot} name={t.name} />
+              <span>
+                <strong>{t.name}</strong>
+                {by && (
+                  <>
+                    <br />
+                    {by}
+                  </>
+                )}
+              </span>
+            </figcaption>
+            {t.services && t.services.length > 0 && (
+              <ul className="quote__tags" aria-label="Services">
+                {t.services.map((s) => (
+                  <li key={s}>{s}</li>
+                ))}
+              </ul>
+            )}
+          </figure>
+        );
+      })}
+    </QuoteScroller>
   );
 }
