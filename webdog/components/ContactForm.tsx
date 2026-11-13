@@ -14,10 +14,16 @@ function Submit() {
   );
 }
 
-export default function ContactForm() {
+export default function ContactForm({
+  defaultTopic = 'general',
+  defaultMessage = '',
+}: {
+  defaultTopic?: 'strategy' | 'pricing' | 'general';
+  defaultMessage?: string;
+} = {}) {
   const [state, action] = useFormState<FormState, FormData>(sendContact, { status: 'idle' });
-  const [topic, setTopic] = useState('general');
-  const [message, setMessage] = useState('');
+  const [topic, setTopic] = useState<string>(defaultTopic);
+  const [message, setMessage] = useState(defaultMessage);
 
   // Links like /about?topic=strategy#contact or ?topic=pricing&plan=Startup preselect the form.
   useEffect(() => {

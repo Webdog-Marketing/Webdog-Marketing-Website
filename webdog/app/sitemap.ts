@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getCaseStudies, getInsights } from '@/lib/airtable';
 import { site } from '@/lib/site';
+import { services } from '@/lib/services';
 
 // Submit https://www.webdog.marketing/sitemap.xml in Search Console.
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -15,6 +16,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${site.url}/jobs`, lastModified: now, changeFrequency: 'weekly', priority: 0.5 },
     { url: `${site.url}/insights`, lastModified: now, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${site.url}/privacy`, lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+    ...services.map((sv) => ({
+      url: `${site.url}/services/${sv.slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.8,
+    })),
     ...insights.map((i) => ({
       url: `${site.url}/insights/${i.slug}`,
       lastModified: i.date ? new Date(i.date) : now,
