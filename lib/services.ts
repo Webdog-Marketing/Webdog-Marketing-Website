@@ -28,6 +28,7 @@ export type Service = {
   proof: ServiceProof[];
   reviewTags: string[]; // shows Google reviews whose Services include any of these
   package?: { name: string; price: string; text: string };
+  fromPrice?: string; // e.g. 'From £1,500' or 'From £600/month'. Leave out to hide.
   faqs: { q: string; a: string }[];
   related: string[]; // slugs
   icon: string; // SVG path, 24x24
@@ -220,7 +221,7 @@ export const services: Service[] = [
     ],
     package: {
       name: 'Communication mapping package',
-      price: 'From £1,500',
+      price: 'From £3,000',
       text: 'A full map of your customer communications, a 12-month email plan, copy and images for each email, and scheduling in your email platform.',
     },
     proof: [

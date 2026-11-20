@@ -330,3 +330,10 @@
 .svc__text strong {
   color: var(--ink);
 }
+.svc-best__price {
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--mint);
+  font: 700 1.5rem var(--font-display);
+  color: var(--green-900);
+}
