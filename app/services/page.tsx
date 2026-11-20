@@ -29,12 +29,12 @@ export default function ServicesPage() {
           <ul className="svc-list">
             {services.map((s) => (
               <li key={s.slug} id={s.slug} className="svc">
-                {/* old anchor from the homepage links */}
-                {s.slug === 'conversion-rate-optimisation' && <span id="ux-ui-design" />}
                 <span className="svc__icon">
                   <ServiceIcon d={s.icon} />
                 </span>
                 <h2 className="svc__name">
+                  {/* old anchor from the homepage links, kept inside the heading so it doesn't break the grid */}
+                  {s.slug === 'conversion-rate-optimisation' && <span id="ux-ui-design" />}
                   <Link href={`/services/${s.slug}`}>{s.name}</Link>
                 </h2>
                 <div className="svc__text">
