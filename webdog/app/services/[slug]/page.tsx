@@ -92,6 +92,7 @@ export default async function ServicePage({ params }: { params: { slug: string }
                 <li key={b}>{b}</li>
               ))}
             </ul>
+            {s.fromPrice && <p className="svc-best__price">{s.fromPrice}</p>}
           </aside>
         </div>
       </section>
